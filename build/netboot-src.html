@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#004080" />
+<title>NettleWeb</title>
+<base href="https://cdn.jsdelivr.net/gh/nettleweb/nettleweb@Main/" target="_blank" />
+<link rel="stylesheet" type="text/css" href="index.css" />
+<link rel="icon" type="image/x-icon" href="favicon.ico" />
+</head>
+<body>
+<header>
+<div id="logo"></div>
+<div id="status"></div>
+<div id="version"></div>
+<input id="side-menu" type="checkbox" />
+<label for="side-menu" id="hamb">Menu</label>
+<nav>
+<ul>
+<li><button id="home-btn" type="button">Home</button></li>
+<li><button id="game-btn" type="button">Games</button></li>
+<li><button id="strm-btn" type="button">Videos</button></li>
+<li><button id="apps-btn" type="button">Apps</button></li>
+<li><button id="chat-btn" type="button">Chat</button></li>
+<li><button id="info-btn" type="button">About &amp; FAQ</button></li>
+</ul>
+</nav>
+<button id="accn-btn" type="button" title="Login"></button>
+<button id="nmsg-btn" type="button" title="Notifications"></button>
+</header>
+<div id="loading">Loading...</div>
+<div id="content">
+<main id="content-page"><h1>NettleWeb</h1><p>Loading, please wait...</p></main>
+</div>
+<div id="error">Error Message</div>
+<button id="install" type="button"><span>Install App</span></button>
+<button id="settings" type="button" title="Settings"></button>
+<div id="overlay"></div>
+<div id="nwidget">
+<h2>Notifications</h2>
+<div id="notif"></div>
+<button id="nclear" type="button">Clear All</button>
+</div>
+<div id="frame-view">
+<div id="frame"></div>
+<button id="frame-close" type="button" title="Close"></button>
+<button id="frame-expand" type="button" title="Enter fullscreen"></button>
+</div>
+<script>
+"use strict";
+(function () {
+	var GH = "https://cdn.jsdelivr.net/gh/nettleweb/nettleweb@Main/";
+
+	function fail(msg) {
+		var el = document.getElementById("content-page");
+		if (el) el.innerHTML = "<h2>Failed to load</h2><p>" + msg + "</p><p>Check your internet connection and reload.</p>";
+	}
+
+	/* hls.js worker via importScripts shim (cross-origin safe) */
+	window.__HLS_WORKER_URL = URL.createObjectURL(new Blob(
+		['importScripts("' + GH + 'lib/hls/hls.worker.js");'],
+		{ type: "text/javascript" }
+	));
+
+	/* patched player.js, fetched once, mounted into blob iframes on demand */
+	var ptextPromise = fetch(GH + "player.js", { cache: "force-cache" }).then(function (r) {
+		if (!r.ok) throw new Error("player.js " + r.status);
+		return r.text();
+	}).then(function (t) {
+		var esc = t.replace(/<\/script/gi, "<\\/script>");
+		var from = 'const sid = new URLSearchParams(win.location.search).get("s");';
+		if (esc.indexOf(from) < 0) throw new Error("player patch failed");
+		return esc.split(from).join('const sid = win.__SID__;');
+	});
+
+	window.__NP = function (sid) {
+		var f = document.createElement("iframe");
+		f.name = "Frame";
+		f.width = "1024";
+		f.height = "768";
+		f.setAttribute("allow", "autoplay; fullscreen; gamepad; encrypted-media; clipboard-read; clipboard-write");
+		ptextPromise.then(function (pjs) {
+			var html = '<!DOCTYPE html><html><head><meta charset="utf-8">'
+				+ '<link rel="stylesheet" href="' + GH + 'common.css">'
+				+ '<link rel="stylesheet" href="' + GH + 'lib/jsdos/js-dos.css">'
+				+ '<link rel="stylesheet" href="' + GH + 'lib/emulatorjs/emulator.min.css">'
+				+ '</head><body><div>Loading...</div>'
+				+ '<script>window.__SID__="' + String(sid).replace(/[^a-z0-9]/gi, "") + '"<\/script>'
+				+ '<script>' + pjs + '<\/script></body></html>';
+			f.src = URL.createObjectURL(new Blob([html], { type: "text/html" }));
+		}).catch(function (e) {
+			f.src = "about:blank";
+		});
+		return f;
+	};
+
+	/* swap the ext-app / weather embeds to their CDN pages once markup is mounted */
+	var SWAP = {
+		"weather.html": GH + "weather.html",
+		"ext/calc/": GH + "ext/calc/index.html",
+		"ext/webemu/": GH + "ext/webemu/index.html",
+		"ext/console/": GH + "ext/console/index.html"
+	};
+	var swapTimer = setInterval(function () {
+		var found = 0;
+		var els = document.querySelectorAll("embed[src]");
+		for (var i = 0; i < els.length; i++) {
+			var to = SWAP[els[i].getAttribute("src")];
+			if (to) { els[i].src = to; found++; }
+		}
+		if (found === 0 && els.length > 0) clearInterval(swapTimer);
+	}, 200);
+	setTimeout(function () { clearInterval(swapTimer); }, 60000);
+
+	/* fetch, patch and run the app */
+	fetch(GH + "main.js", { cache: "force-cache" }).then(function (r) {
+		if (!r.ok) throw new Error("main.js " + r.status);
+		return r.text();
+	}).then(function (src) {
+		function P(from, to) {
+			if (src.indexOf(from) < 0) throw new Error("patch failed: " + from.slice(0, 48));
+			src = src.split(from).join(to);
+		}
+		P("e0='@import url(\"/index.dark.css\");'", "e0='@import url(\"" + GH + "index.dark.css\");'");
+		P("await A(\"/manifest.json\",dG)", "await null");
+		P("const O=mr.location,P=mr.history,Q=mr.origin,",
+			"const O=mr.location,P=(O.protocol===\"file:\"?{replaceState(){},pushState(){},back(){},forward(){},get state(){return null},get length(){return 1},get scrollRestoration(){return mr.history.scrollRestoration},set scrollRestoration(v){mr.history.scrollRestoration=v}}:mr.history),Q=mr.origin,");
+		P("iz=O.pathname,iA=new URLSearchParams(O.search)", "iz=\"/\",iA=new URLSearchParams(O.search)");
+		P("if(O.origin!==dg)return void O.replace(dI)", "if(!1)return void O.replace(dI)");
+		P("default:return!0}", "default:break}");
+		P("if(X&&(null==a||a[a_](a$)!==b2))return!0", "if(X&&!X&&(null==a||a[a_](a$)!==b2))return!0");
+		P("default:\nreturn a.remove(),!0}", "default:}");
+		P("const b=a[a_](\"src\");if(!b||a.textContent)return a.remove(),!0;", "const b=a[a_](\"src\");if(!b||a.textContent)continue;");
+		P("case\"chrome-extension:\":a.remove();continue}return a.remove(),!0}", "case\"chrome-extension:\":a.remove();continue}return a.remove(),!1}");
+		P("return null==g||null==h||(mH.X=g+h+j+m+\"3.sha\"+l+i+bz,mH.Y=g+h+mH.b+bz,X&&e(bh)[a_](aZ.slice(10,14)).slice(0,aV)!==aY||null==ms[b8](b9)||null==ms[b8](ba)||ms[bb]!==aT.slice(2,11)||f)})())return aD(aX,b1),void setTimeout(()=>{O.replace(di)},300);",
+			"return null==g||null==h?!0:(mH.X=g+h+j+m+\"3.sha\"+l+i+bz,mH.Y=g+h+mH.b+bz,!1)})());");
+		P("e=H(\"/player.html?s=\"+d)", "e=__NP(d)");
+		P("workerPath:\"/lib/hls/hls.worker.js\"", "workerPath:window.__HLS_WORKER_URL");
+		P("c.src=\"/lib/hls/hls.min.js\"", "c.src=\"" + GH + "lib/hls/hls.min.js\"");
+		P("\"/res/preview.svg\"", "\"" + GH + "res/preview.svg\"");
+		P("\"/res/user.svg\"", "\"" + GH + "res/user.svg\"");
+		P("\"res/user.svg\"", "\"" + GH + "res/user.svg\"");
+		P("\"res/bot.svg\"", "\"" + GH + "res/bot.svg\"");
+		P("\"/res/group.svg\"", "\"" + GH + "res/group.svg\"");
+		P("\"/res/cloud.svg\"", "\"" + GH + "res/cloud.svg\"");
+		P("\"res/google.ico\"", "\"" + GH + "favicon.ico\"");
+		P("eD='url(\"res/lock-open-w.svg\")'", "eD='url(\"" + GH + "res/lock-open-w.svg\")'");
+
+		var s = document.createElement("script");
+		s.src = URL.createObjectURL(new Blob([src], { type: "text/javascript" }));
+		document.body.appendChild(s);
+	}).catch(function (e) {
+		fail(String(e && e.message || e));
+	});
+})();
+</script>
+</body>
+</html>

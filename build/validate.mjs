@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 
-const html = readFileSync(new URL("../aether-terminal.html", import.meta.url), "utf8");
+const html = readFileSync(new URL(process.env.LITE ? "../aether-terminal-lite.html" : "../aether-terminal.html", import.meta.url), "utf8");
 console.log("size:", (html.length / 1048576).toFixed(2), "MB");
 
 // 1) extract top-level scripts (not inside JSON strings — the JSON-escaped ones contain <\/script>)

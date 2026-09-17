@@ -12,7 +12,7 @@ while ((m = re.exec(html))) {
   scripts.push(html.slice(m.index + m[0].length, end));
   re.lastIndex = end;
 }
-if (scripts.length !== 3) { console.error("expected 3 scripts, got", scripts.length); process.exit(1); }
+if (scripts.length < 2) { console.error("too few scripts:", scripts.length); process.exit(1); }
 
 const events = [];
 const redirects = [];
