@@ -1,0 +1,45 @@
+name: Fetch live site snapshot
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "arena/01a0b11c-aether-terminal"
+    paths:
+      - ".github/workflows/fetch-live.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch live HTML
+        run: |
+          mkdir -p live
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+          curl -sSL --compressed -A "$UA" "https://nettleweb.com/" -o live/index.html || echo "::warning::main page fetch failed"
+          curl -sSL --compressed -A "$UA" "https://nettleweb.com/player.html" -o live/player.html || true
+          curl -sSL --compressed -A "$UA" "https://nettleweb.com/ext/webemu/index.html" -o live/webemu.html || true
+          wc -c live/* 2>/dev/null || true
+          sha256sum live/* 2>/dev/null || true
+          head -c 400 live/index.html 2>/dev/null || true
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: live-html
+          path: live/
+          if-no-files-found: warn
+
+      - name: Commit snapshot back to branch
+        run: |
+          git config user.name "arena-fetch-bot"
+          git config user.email "arena-fetch-bot@users.noreply.github.com"
+          git add live/
+          git diff --cached --quiet && echo "nothing to commit" || git commit -m "chore: snapshot live site HTML"
+          git push origin HEAD:"arena/01a0b11c-aether-terminal" || echo "::warning::push failed (permissions)"
