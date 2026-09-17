@@ -17,22 +17,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fetch live HTML
+      - name: Fetch live assets
         run: |
           mkdir -p live
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-          curl -sSL --compressed -A "$UA" "https://nettleweb.com/" -o live/index.html || echo "::warning::main page fetch failed"
-          curl -sSL --compressed -A "$UA" "https://nettleweb.com/player.html" -o live/player.html || true
-          curl -sSL --compressed -A "$UA" "https://nettleweb.com/ext/webemu/index.html" -o live/webemu.html || true
-          wc -c live/* 2>/dev/null || true
-          sha256sum live/* 2>/dev/null || true
-          head -c 400 live/index.html 2>/dev/null || true
+          files="main.js index.css index.dark.css common.css player.js player.css manifest.json sw.js auth.js auth.html embed.js embed.html search.js search.html weather.js weather.html 404.html res/pay.json ext/webemu/index.css ext/webemu/main.js ext/webemu/libv86.js ext/console/main.js ext/console/index.css ext/calc/main.js ext/calc/index.css ext/calc/calculator.js"
+          for f in $files; do
+            mkdir -p "live/$(dirname "$f")"
+            curl -sSL --compressed -A "$UA" "https://nettleweb.com/$f" -o "live/$f" || echo "::warning::failed $f"
+          done
+          wc -c live/*.js live/*.css live/*.html live/*.json 2>/dev/null | tail -30
+          sha256sum live/main.js live/index.css 2>/dev/null
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: live-html
+          name: live-assets
           path: live/
           if-no-files-found: warn
 
@@ -41,5 +42,5 @@ jobs:
           git config user.name "arena-fetch-bot"
           git config user.email "arena-fetch-bot@users.noreply.github.com"
           git add live/
-          git diff --cached --quiet && echo "nothing to commit" || git commit -m "chore: snapshot live site HTML"
+          git diff --cached --quiet && echo "nothing to commit" || git commit -m "chore: snapshot live site assets"
           git push origin HEAD:"arena/01a0b11c-aether-terminal" || echo "::warning::push failed (permissions)"
