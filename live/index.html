@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="Content-Security-Policy" content="base-uri 'self'; font-src 'self'; script-src 'self'; worker-src 'self'; form-action 'self'; connect-src 'self' wss: https:; manifest-src 'self'; script-src-attr 'self'; script-src-elem 'self';" />
+		<meta name="referrer" content="no-referrer" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<meta name="theme-color" content="#004080" />
+		<meta name="application-name" content="NettleWeb" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<base href="/" target="_blank" />
+		<link rel="icon" type="image/x-icon" href="favicon.ico" />
+		<link rel="manifest" type="application/json" href="manifest.json" />
+		<link rel="stylesheet" type="text/css" href="index.css" />
+		<link rel="apple-touch-icon" type="image/svg+xml" href="res/logo3.svg" />
+		<link rel="canonical" href="https://nettleweb.com/" />
+		<link rel="privacy-policy" href="https://nettleweb.com/privacy" />
+		<link rel="terms-of-service" href="https://nettleweb.com/terms" />
+		<title>NettleWeb</title>
+	</head>
+	<body>
+		<header>
+			<div id="logo"></div>
+			<div id="status"></div>
+			<div id="version"></div>
+			<input id="side-menu" type="checkbox" />
+			<label for="side-menu" id="hamb">Menu</label>
+			<nav>
+				<ul>
+					<li><button id="home-btn" type="button">Home</button></li>
+					<li><button id="game-btn" type="button">Games</button></li>
+					<li><button id="strm-btn" type="button">Videos</button></li>
+					<li><button id="apps-btn" type="button">Apps</button></li>
+					<li><button id="chat-btn" type="button">Chat</button></li>
+					<li><button id="info-btn" type="button">About &amp; FAQ</button></li>
+				</ul>
+			</nav>
+			<button id="accn-btn" type="button" title="Login"></button>
+			<button id="nmsg-btn" type="button" title="Notifications"></button>
+		</header>
+		<div id="loading">Loading...</div>
+		<div id="content">
+			<main id="content-page">
+				<h1>NettleWeb - Your ultimate internet hub!</h1>
+				<a href="https://nettleweb.com/" target="_blank" rel="noopener">Main Website</a>
+			</main>
+			<footer>
+				<div>
+					<div>
+						<a href="https://github.com/nettleweb" target="_blank" rel="noopener"><img src="res/github.svg" width="36" height="36" loading="lazy" decoding="async" draggable="false" alt="GitHub" title="GitHub" /></a>
+						<a href="https://discord.gg/djdH3kVd4v" target="_blank" rel="noopener"><img src="res/discord.svg" width="36" height="36" loading="lazy" decoding="async" draggable="false" alt="Discord" title="Discord" /></a>
+						<a href="https://www.youtube.com/@nettleweb" target="_blank" rel="noopener"><img src="res/youtube.svg" width="36" height="36" loading="lazy" decoding="async" draggable="false" alt="YouTube" title="YouTube" /></a>
+						<a href="https://www.facebook.com/nettleweb" target="_blank" rel="noopener"><img src="res/facebook.svg" width="36" height="36" loading="lazy" decoding="async" draggable="false" alt="Facebook" title="Facebook" /></a>
+						<a href="https://www.instagram.com/nettleweb" target="_blank" rel="noopener"><img src="res/instagram.svg" width="36" height="36" loading="lazy" decoding="async" draggable="false" alt="Instagram" title="Instagram" /></a>
+					</div>
+					<div>&#xa9;2025 NettleWeb Development Team; All rights reserved.</div>
+					<div>We are working hard to improve your user experience.</div>
+					<div><b>Liberty</b> - <b>Privacy</b> - <b>Community</b></div>
+				</div>
+				<div>
+					<h2>Support</h2>
+					<ul>
+						<li><a href="https://nettleweb.com/help" target="_blank" rel="noopener">Get help</a></li>
+						<li><a href="/cdn-cgi/l/email-protection#275452575748555367494253534b425042450944484a" target="_blank" rel="noopener">Contact us</a></li>
+						<li><a href="https://nettleweb.com/reportbug" target="_blank" rel="noopener">Report an issue</a></li>
+					</ul>
+				</div>
+				<div>
+					<h2>Policies</h2>
+					<ul>
+						<li><a href="/cdn-cgi/l/email-protection#8beaefe6e2e5cbe5eeffffe7eefceee9a5e8e4e6b4f8fee9e1eee8ffb6d9eefbe4f9ffaeb9bbc8e4e5ffeee5ffaeb9bbcae9fef8ee" target="_blank" rel="noopener">Report abuse</a></li>
+						<li><a href="https://nettleweb.com/privacy" target="_blank" rel="noopener">Privacy Policy</a></li>
+						<li><a href="https://nettleweb.com/terms" target="_blank" rel="noopener">Terms of Service</a></li>
+					</ul>
+				</div>
+			</footer>
+		</div>
+		<div id="error">Error Message</div>
+		<noscript><div>Error: This page could not function unless JavaScript is supported and enabled in your browser.</div></noscript>
+		<button id="install" type="button"><span>Install App</span></button>
+		<button id="settings" type="button" title="Settings"></button>
+		<div id="overlay"></div>
+		<div id="nwidget">
+			<h2>Notifications</h2>
+			<div id="notif"></div>
+			<button id="nclear" type="button">Clear All</button>
+		</div>
+		<div id="frame-view">
+			<div id="frame"></div>
+			<button id="frame-close" type="button" title="Close"></button>
+			<button id="frame-expand" type="button" title="Enter fullscreen"></button>
+		</div>
+		<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/javascript" src="main.js" blocking="render"></script>
+	</body>
+</html>
