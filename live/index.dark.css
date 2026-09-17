@@ -1,0 +1,277 @@
+body,
+svg {
+	color: #e0e0e0;
+	background: #202020;
+}
+
+header,
+option,
+optgroup,
+#nwidget {
+	background: #404040;
+}
+
+#logo,
+#banner {
+	background-image: url("res/logo-w.svg");
+}
+
+#game-category,
+#game-navigator {
+	border-color: #606060;
+	background: #404040;
+}
+
+#version,
+header>nav>ul>li>button,
+#game-category>ul>li>button {
+	color: #d0d0d0;
+}
+
+#id,
+#ac-un,
+#chatmode>button,
+header>nav>ul>li>button[data-current],
+#game-category>ul>li>button[data-current] {
+	color: #ffffff;
+}
+
+#hamb,
+#hamb::before,
+#hamb::after {
+	background: #ffffff;
+}
+
+#accn-btn {
+	filter: brightness(80%);
+	background-image: url("res/login-w.svg");
+}
+
+#accn-btn[data-ac],
+#chinfo[data-op="profile"] {
+	background-image: url("res/account-w.svg");
+}
+
+#nmsg-btn {
+	filter: brightness(80%);
+	background-image: url("res/bell-w.svg");
+}
+
+#nmsg-btn[data-unread] {
+	background-image: url("res/bell-empty-w.svg");
+}
+
+#accn-btn:hover,
+#nmsg-btn:hover {
+	filter: brightness(85%);
+}
+
+#accn-btn:active,
+#nmsg-btn:active {
+	filter: brightness(90%);
+}
+
+#accn-btn[data-current],
+#nmsg-btn[data-current] {
+	filter: none;
+}
+
+.search>button {
+	background-image: url("res/search-w.svg");
+}
+
+.game {
+	border-color: #606060;
+	background-color: #404040;
+}
+
+#bio,
+#ac-bio,
+#nwidget>div>span,
+#ac-friends>div>span,
+#services-page>div>span,
+.list-body>div>div>.desc {
+	color: #c0c0c0;
+}
+
+footer,
+.list-body>div>div>.time {
+	color: #a0a0a0;
+}
+
+#header,
+#sidemenu {
+	background: #404040;
+}
+
+#account,
+#chatmode {
+	background: #505050;
+}
+
+#global {
+	background-image: url("res/global-w.svg");
+}
+
+#friends {
+	background-image: url("res/friends-w.svg");
+}
+
+#chatgpt {
+	background-image: url("res/gpt-w.svg");
+}
+
+#toggle {
+	background-image: url("res/menu-w.svg");
+}
+
+#toggle[title="Close"] {
+	background-image: url("res/back-w.svg");
+}
+
+#newchat {
+	background-image: url("res/new-chat-w.svg");
+}
+
+#history>div>button,
+#messages>div>button.delete,
+#comments>div>button.delete {
+	background-image: url("res/delete-w.svg");
+}
+
+#chinfo[data-op="grinfo"] {
+	background-image: url("res/info-w.svg");
+}
+
+#chinfo[data-op="discord"] {
+	background-image: url("res/newtab-w.svg");
+}
+
+#chat,
+footer,
+#ac-prof,
+#content>div,
+#install:hover {
+	background: #202020;
+}
+
+#emoji {
+	background-image: url("res/emoji-w.svg");
+}
+
+#ufile {
+	background-image: url("res/add-file-w.svg");
+}
+
+#loadmore:hover,
+#menu>div:hover,
+#p-load-more:hover,
+#yt-load-more:hover,
+.list-body>div:hover,
+#services-page>div:hover,
+#yt-option-bar>button:hover,
+#yt-filter-bar>div>div>button:hover {
+	background: #404040;
+}
+
+#loadmore:active,
+#menu>div:active,
+#p-load-more:active,
+#yt-load-more:active,
+.list-body>div:active,
+#services-page>div:active,
+#yt-option-bar>button:active,
+#yt-filter-bar>div>div>button:active {
+	background: #606060;
+}
+
+#chatmode>button:not([data-current]):hover,
+#toggle:hover,
+#chinfo:hover,
+#newchat:hover,
+#history>div:hover,
+#msglist>div:hover,
+#channels>div:hover,
+#grusers>div>button:hover,
+#ac-friends>div>button:hover,
+#account-settings input~button:hover {
+	background-color: #606060;
+}
+
+#chatmode>button:not([data-current]):active,
+#toggle:active,
+#chinfo:active,
+#newchat:active,
+#history>div:active,
+#msglist>div:active,
+#channels>div:active,
+#grusers>div>button:active,
+#history>div[data-current],
+#msglist>div[data-current],
+#channels>div[data-current],
+#ac-friends>div>button:active,
+#account-settings input~button:active {
+	background-color: #808080;
+}
+
+#messages>div button.tick,
+#comments>div button.tick,
+#account-settings button.tick {
+	background-image: url("res/tick-w.svg");
+}
+
+#grusers>div button.cross,
+#messages>div button.cross,
+#comments>div button.cross,
+#account-settings button.cross {
+	background-image: url("res/close-w.svg");
+}
+
+#account-settings button.message {
+	background-image: url("res/new-chat-w.svg");
+}
+
+#ac-edit,
+#ac-bio-edit,
+#ac-name-edit,
+#ac-email-edit,
+#messages>div>button.edit,
+#comments>div>button.edit {
+	background-image: url("res/edit-w.svg");
+}
+
+#ac-link {
+	background-image: url("res/link-w.svg");
+}
+
+#like,
+#vlike {
+	background-image: url("res/thumb-up-w.svg");
+}
+
+#like[data-given] {
+	background-image: url("res/thumb-up-given-w.svg");
+}
+
+#share {
+	background-image: url("res/share-w.svg");
+}
+
+#vview {
+	background-image: url("res/view-w.svg");
+}
+
+#install {
+	filter: brightness(200%);
+	background: #101010;
+}
+
+#install:active {
+	background: #303030;
+}
+
+@media all and (max-width: 800px) {
+	header>nav {
+		background: #404040;
+	}
+}
